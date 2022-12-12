@@ -1,0 +1,17 @@
+html {
+  min-height: 100vh;
+}
+
+body {
+  min-height: 100vh;
+  background-color: pink;
+  display: flex;
+  flex-flow:column;
+  /* margin-bottom: 60px; */
+}
+
+
+.footer {
+  height: 60px;
+  margin-top: auto;
+}
