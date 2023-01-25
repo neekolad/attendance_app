@@ -48,7 +48,7 @@ if ($method == 'POST') {
     $gen = mysqli_real_escape_string($dbc, trim($_POST['gen']));
   }
 
-  # Cheeck to see if phone number is entered
+  # Check to see if phone number is entered
 
   if(empty($_POST['phone'])) {
     $err[] = "You forgot to enter phone number!";
