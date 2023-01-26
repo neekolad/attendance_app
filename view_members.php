@@ -6,9 +6,12 @@ $page_title = 'View members';
 # Include header
 include 'includes/header.html';
 
+# Include credentials
+include 'conf.php';
+
 # Database connection
 
-$dbc = @mysqli_connect('localhost', 'despara', 'enigma11', 'attendance_app');
+$dbc = @mysqli_connect('localhost', "$un", "$pw", 'attendance_app');
 
 # Check connection
 if (!$dbc) {

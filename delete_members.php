@@ -3,6 +3,9 @@
 # Set page title
 $page_title = 'Delete members';
 
+# Include credentials
+include 'conf.php';
+
 
 # Include header
 include 'includes/header.html';
@@ -21,7 +24,7 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])) { // From view_members.php
 }
 
 # Database connection
-$dbc = @mysqli_connect('localhost', 'despara', 'enigma11', 'attendance_app');
+$dbc = @mysqli_connect('localhost', "$un", "$pw", 'attendance_app');
 
 # Checking for post method
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

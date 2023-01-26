@@ -6,6 +6,9 @@ $page_title = 'Add members';
 # Include header
 include 'includes/header.html';
 
+# Include credentials
+include 'conf.php';
+
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method == 'POST') {
@@ -13,7 +16,7 @@ if ($method == 'POST') {
 
   # Connect to database
   mysqli_report(MYSQLI_REPORT_ALL | MYSQLI_REPORT_STRICT);
-  $dbc = new mysqli("localhost", "despara", "enigma11", "attendance_app");
+  $dbc = new mysqli("localhost", "$un", "$pw", "attendance_app");
 
   # Check if first name is entered
 

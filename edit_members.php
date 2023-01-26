@@ -6,6 +6,9 @@ $page_title = 'Edit members';
 # Include header
 include 'includes/header.html';
 
+# Include credentials
+include 'conf.php';
+
 echo '<h1>This is a EDIT MEMBERS page</h1>';
 
 # ID validation check
@@ -22,7 +25,7 @@ if(isset($_GET['id']) and is_numeric($_GET['id'])) { // from view_users.php
 
 # Database connection
 
-$dbc = @mysqli_connect('localhost', 'despara', 'enigma11', 'attendance_app');
+$dbc = @mysqli_connect('localhost', "$un", "$pw", 'attendance_app');
 
 # POST method check
 
