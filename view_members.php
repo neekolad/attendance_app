@@ -10,7 +10,6 @@ include 'includes/header.html';
 include 'conf.php';
 
 # Database connection
-
 $dbc = @mysqli_connect('localhost', "$un", "$pw", 'attendance_app');
 
 # Check connection

@@ -1,7 +1,7 @@
 <?php
 
 # Set page title
-$page_title = 'Edit members';
+$page_title = 'Edit Staff';
 
 # Include header
 include 'includes/header.html';
@@ -9,13 +9,12 @@ include 'includes/header.html';
 # Include credentials
 include 'conf.php';
 
-echo '<h1>This is a EDIT MEMBERS page</h1>';
+echo '<h1>This is a EDIT STAFF page</h1>';
 
 # ID validation check
 
-if(isset($_GET['id']) and is_numeric($_GET['id'])) { // from view_users.php
+if(isset($_GET['id']) and is_numeric($_GET['id'])) { // from view_staff.php
   $id = $_GET['id'];
-  echo $id;
 } elseif (isset($_POST['id']) and is_numeric($_POST['id'])) { // For editing member
   $id = $_POST['id'];
 } else { // Invalid ID, stop the script
@@ -49,13 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $lname = mysqli_real_escape_string($dbc, trim($_POST['lname']));
   }
 
-  # Check if date of birth is entered
-
-  if(empty($_POST['dob'])) {
-    $err[] = "You forgot to enter your date of birth!";
-  } else {
-    $dob = mysqli_real_escape_string($dbc, $_POST['dob']);
-  }
 
   # Check to see if generation is entered
 
@@ -73,15 +65,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $phone = mysqli_real_escape_string($dbc, trim($_POST['phone']));
   }
 
-  $address = empty($_POST['address']) ? "N/A" : $_POST['address'];
-  $joined = empty($_POST['joined']) ? "2018-2-20" : $_POST['joined'];
 
 # Check if any errors
 
 if(empty($err)) { // Everything OK
   # Create query
-  $q = "UPDATE users SET fname='$fname', lname='$lname', dob='$dob',
-  generation='$gen', phone='$phone', address='$address', joined='$joined' WHERE user_id=$id";
+  $q = "UPDATE staff SET fname='$fname', lname='$lname',
+  boss='$gen', phone='$phone' WHERE staff_id=$id";
   $r = @mysqli_query($dbc, $q);
 
   if(mysqli_affected_rows($dbc) == 1) { // If everything OK
@@ -106,7 +96,7 @@ if(empty($err)) { // Everything OK
 
 # Fetch user info from DB
 
-$q = "SELECT fname, lname, dob, generation, phone, address, joined FROM users WHERE user_id=$id";
+$q = "SELECT fname, lname, phone, boss FROM staff WHERE staff_id=$id";
 $r = @mysqli_query($dbc, $q);
 
 if (mysqli_num_rows($r) == 1) { // Valid ID
@@ -114,16 +104,13 @@ if (mysqli_num_rows($r) == 1) { // Valid ID
   $row = mysqli_fetch_array($r, MYSQLI_ASSOC);
 
   # Print form
-  echo '<form class="" action="edit_members.php" method="post">
+  echo '<form class="" action="edit_staff.php" method="POST">
         <p>First name: <input type="text" name="fname" value="' . $row['fname'] . '"></p>
         <p>Last name: <input type="text" name="lname" value="' . $row['lname'] . '"></p>
-        <p>Date of birth: <input type="date" name="dob" value="'. $row['dob'] . '"></p>
-        <p>Date joined: <input type="date" name="joined" value="' . $row['joined'] . '"></p>
-        <p>Address: <input type="text" name="address" value="' . $row['address'] . '"></p>
         <p>Phone: <input type="text" name="phone" value="' . $row['phone'] . '"></p>
-        <p>Generation: <input type="text" name="generation" value="' . $row['generation'] . '"></p>
+        <p>Generation: <input type="text" name="generation" value="' . $row['boss'] . '"></p>
         <p><input class="form-control btn btn-dark" type="submit" name="submit" value="Submit"></p>
-        <p><input type="hidden" name="id" value="' . $id . '"</p>
+        <input type="hidden" name="id" value="' . $id . '"</p>
         </form>';
 
 

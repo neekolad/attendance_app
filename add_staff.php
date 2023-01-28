@@ -1,7 +1,7 @@
 <?php
 
 # Set page title
-$page_title = 'Add members';
+$page_title = 'Add Staff';
 
 # Include header
 include 'includes/header.html';
@@ -35,13 +35,6 @@ if ($method == 'POST') {
     $lname = mysqli_real_escape_string($dbc, trim($_POST['lname']));
   }
 
-  # Check if date of birth is entered
-
-  if(empty($_POST['dob'])) {
-    $err[] = "You forgot to enter your date of birth!";
-  } else {
-    $dob = mysqli_real_escape_string($dbc, $_POST['dob']);
-  }
 
   # Check to see if generation is entered
 
@@ -59,18 +52,16 @@ if ($method == 'POST') {
     $phone = mysqli_real_escape_string($dbc, trim($_POST['phone']));
   }
 
-  $address = empty($_POST['address']) ? "N/A" : $_POST['address'];
-  $joined = empty($_POST['joined']) ? "-" : $_POST['joined'];
 
   # If everything is OK we should write to database
 
   if(empty($err)) {
 
     # Prepare query
-    $stmt = $dbc->prepare("INSERT INTO users
-                          (fname, lname, dob, joined, address, phone, generation)
-                              VALUES(?,?,?,?,?,?,?)");
-    $stmt->bind_param("ssssssi", $fname, $lname, $dob, $joined, $address, $phone, $gen);
+    $stmt = $dbc->prepare("INSERT INTO staff
+                          (fname, lname, phone, boss)
+                              VALUES(?,?,?,?)");
+    $stmt->bind_param("ssss", $fname, $lname, $phone, $gen);
     $stmt->execute();
 
     if ($stmt) {
@@ -89,17 +80,15 @@ if ($method == 'POST') {
     }
   }
 
-
-
 } # End if POST
 ?>
 
-<h1>This is Add members page</h1>
+<h1>This is Add staff page, you can add coaches here.</h1>
 
 <div class="container">
   <div class="row">
     <div class="col-3 py-4">
-      <form class="" action="add_members.php" method="POST">
+      <form class="" action="add_staff.php" method="POST">
         <div class="form-group my-1">
           <label for="fname" class="">First Name*</label>
           <input type="text" name="fname" id="fname" value=" <?php if (isset($fname)) echo $fname; ?>" class="form-control">
@@ -107,18 +96,6 @@ if ($method == 'POST') {
         <div class="form-group my-1">
           <label for="lname" class="">Last Name*</label>
           <input type="text" name="lname" id="lname" value="<?php if (isset($lname)) echo $lname; ?>" class="form-control">
-        </div>
-        <div class="form-group my-1">
-          <label for="dob" class="">Date of Birth*</label>
-          <input type="date" name="dob" id="dob" value="<?php if (isset($dob)) echo $dob; ?>" class="form-control">
-        </div>
-        <div class="form-group my-1">
-          <label for="joined" class="">Joined Date</label>
-          <input type="date" name="joined" id="joined" value="<?php if (isset($joined)) echo $joined; ?>" class="form-control">
-        </div>
-        <div class="form-group my-1">
-          <label for="address" class="">Address</label>
-          <input type="text" name="address" id="address" value="<?php if (isset($address)) echo $address; ?>" class="form-control">
         </div>
         <div class="form-group my-1">
           <label for="phone" class="">Phone*</label>
@@ -144,61 +121,3 @@ if ($method == 'POST') {
     </div>
   </div>
 </div>
-
-
-<!-- Include footer -->
-<?php
-include 'includes/footer.html';
-?>
-
-
-
-<!-- Database tables
-
-CREATE TABLE users (
-  user_id INT NOT NULL AUTO_INCREMENT,
-  fname VARCHAR(30) NOT NULL,
-  lname VARCHAR(30) NOT NULL,
-  dob DATE,
-  joined DATE,
-  address VARCHAR(30),
-  phone INT(30),
-  generation INT,
-  registered TIMESTAMP,
-  PRIMARY KEY(user_id)
-);
-
-INSERT INTO users (fname, lname, dob, joined, address, phone, generation)
-VALUES ('nikola', 'despic', '1986-12-15', '2018-2-18', 'some address 123', 32112336, 2013);
-
-CREATE TABLE events (
-  event_id INT NOT NULL AUTO_INCREMENT,
-  staff_id INT NOT NULL,
-  generation INT NOT NULL,
-  dt DATETIME NOT NULL,
-  ts TIMESTAMP,
-  PRIMARY KEY(event_id),
-  FOREIGN KEY(staff_id) REFERENCES staff(staff_id)
-);
-
-INSERT INTO events (generation, staff_id, dt) VALUES (2015, 1, '2023-1-30 18:00');
-INSERT INTO events (generation, staff_id, dt) VALUES (2013, 2, '2023-1-28 19:00');
-INSERT INTO events (generation, staff_id, dt) VALUES (2012, 1, '2023-1-30 20:00');
-
-CREATE TABLE staff (
-  staff_id INT NOT NULL AUTO_INCREMENT,
-  fname VARCHAR(30) NOT NULL,
-  lname VARCHAR(30) NOT NULL,
-  phone INT NOT NULL,
-  boss INT,
-  PRIMARY KEY (staff_id)
-);
-
-INSERT INTO staff (fname, lname, phone, boss) VALUES ('goran', 'sekulic', 0645554448, 2012);
-INSERT INTO staff (fname, lname, phone, boss) VALUES ('nikola', 'despic', 0646687160, 2013);
-
-
-
-
-
--->
